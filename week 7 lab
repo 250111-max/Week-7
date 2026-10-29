@@ -1,0 +1,167 @@
+#include <iostream>
+using namespace std;
+
+int toMinutes(int h, int m) {
+    return h * 60 + m;
+}
+
+int convertTime(int current, int correct) {
+    int diff = correct - current;
+    int steps[4] = {60, 15, 5, 1};
+    int ops = 0;
+    for (int s : steps) {
+        ops += diff / s;
+        diff %= s;
+    }
+    return ops;
+}
+
+int main() {
+    int h1, m1, h2, m2;
+    char c;
+    cin >> h1 >> c >> m1 >> h2 >> c >> m2;
+    cout << convertTime(toMinutes(h1, m1), toMinutes(h2, m2)) << endl;
+    return 0;
+}
+
+#include <iostream>
+using namespace std;
+
+bool hasAlternatingBits(int n) {
+    while (n > 1) {
+        if ((n & 1) == ((n >> 1) & 1)) {
+            return false;
+        }
+        n >>= 1;
+    }
+    return true;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    cout << (hasAlternatingBits(n) ? "true" : "false") << endl;
+    return 0;
+}
+
+#include <iostream>
+using namespace std;
+
+int tribonacci(int n) {
+    if (n == 0) return 0;
+    if (n == 1 || n == 2) return 1;
+
+    int a = 0;
+    int b = 1;
+    int c = 1;
+
+    for (int i = 3; i <= n; i++) {
+        int next = a + b + c;
+        a = b;
+        b = c;
+        c = next;
+    }
+    return c;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    cout << tribonacci(n) << endl;
+    return 0;
+}
+
+#include <iostream>
+using namespace std;
+
+void printRepeat(char c, int times) {
+    for (int i = 0; i < times; i++) {
+        cout << c;
+    }
+}
+
+int main() {
+    int n, k;
+    cin >> n >> k;
+
+    int extra = k - n;
+    int zs = extra / 25;
+    int rem = extra % 25;
+
+    int middle = (rem > 0) ? 1 : 0;
+    int as = n - zs - middle;
+
+    printRepeat('a', as);
+    if (rem > 0) {
+        cout << (char)('a' + rem);
+    }
+    printRepeat('z', zs);
+    cout << endl;
+    return 0;
+}
+
+#include <iostream>
+using namespace std;
+
+long long power(int base, int exp) {
+    long long result = 1;
+    long long b = base;
+    while (exp > 0) {
+        if (exp % 2 == 1) {
+            result *= b;     // use this bit of the exponent
+        }
+        b *= b;              // square the base
+        exp /= 2;
+    }
+    return result;
+}
+
+int integerBreak(int n) {
+    // Small cases: we must split into at least two parts
+    if (n == 2) return 1;    // 1 + 1
+    if (n == 3) return 2;    // 1 + 2
+
+    int q = n / 3;           // how many 3s fit
+    switch (n % 3) {
+    case 0:
+        return (int)power(3, q);            // 3 * 3 * ... * 3
+    case 1:
+        return (int)(power(3, q - 1) * 4);  // one 3 becomes a 4 (2 + 2)
+    default:  // case 2
+        return (int)(power(3, q) * 2);      // 3s and one 2
+    }
+}
+
+int main() {
+    int n;
+    cin >> n;
+    cout << integerBreak(n) << endl;
+    return 0;
+}
+
+
+#include <iostream>
+using namespace std;
+
+int minOperations(int n) {
+    int ops = 0;
+    while (n > 0) {
+        if ((n & 1) == 0) {
+            n >>= 1;              // last bit is 0: free, just shift
+        } else if ((n & 3) == 3) {
+            n += 1;               // ...11: add 1, the run of 1s becomes a carry
+            ops++;
+        } else {
+            n -= 1;               // ...01: remove the single 1
+            ops++;
+        }
+    }
+    return ops;
+}
+
+int main() {
+    int n;
+    cin >> n;
+    cout << minOperations(n) << endl;
+    return 0;
+}
